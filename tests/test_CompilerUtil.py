@@ -1,9 +1,10 @@
-import sys
-from pathlib import Path
 import logging
-from unittest import mock, TestCase, main
+import sys
+from unittest import TestCase, main
+
 from CompilerUtil import SasCompilerUtil
-sys.path.insert(0, '../../Utilities')
+
+sys.path.insert(0, '../../Utilities') # Fix for where your Utilities dir is.
 from LogitUtil import logit
 
 
