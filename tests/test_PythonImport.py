@@ -1,11 +1,12 @@
-import sys
-from pathlib import Path
 import logging
-from unittest import mock, TestCase, main
-from PythonImport import PandasStyleImport, PythonStyleImport
+import sys
+from unittest import TestCase, main
+
+from CompilerUtil import SasCompilerUtil
+from PythonImport import PythonImport, PandasStyleImport, PythonStyleImport
+
 sys.path.insert(0, '../../Utilities') # Fix for where your Utilities dir is.
 from LogitUtil import logit
-
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -14,12 +15,21 @@ logger = logging.getLogger(__name__)
 Interesting Python features:
 """
 
-class Test_PythonImport(TestCase):
-    pass
+class test_PythonImport(TestCase):
+    def setUp(self):
+        self.pi = PythonImport()
 
-class Test_PandasStyleImport(Test_PythonImport):
+class Test_PandasStyleImport(test_PythonImport):
     def setUp(self):
         self.pd = PandasStyleImport()
+
+    @logit()
+    def test_libs_getter_setter(self):
+        exp = {'collections': 'defaultdict'}
+        self.pd.libs = exp
+        act = self.pd.libs
+        self.assertEqual(exp, act, 'Test 1 fail')
+
 
     @logit()
     def test_add_lib_method(self):
@@ -30,7 +40,7 @@ class Test_PandasStyleImport(Test_PythonImport):
         d = self.pd.add_lib_method(lib=lib1,alias=alias1)
         self.assertEqual(exp1, d, 'fail test 1')
 
-class Test_PythonStyleImport(Test_PythonImport):
+class Test_PythonStyleImport(test_PythonImport):
     def setUp(self):
         self.py = PythonStyleImport()
 

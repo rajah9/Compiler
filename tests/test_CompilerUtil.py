@@ -7,7 +7,6 @@ from CompilerUtil import SasCompilerUtil
 sys.path.insert(0, '../../Utilities') # Fix for where your Utilities dir is.
 from LogitUtil import logit
 
-
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 

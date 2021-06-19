@@ -1,6 +1,10 @@
+import sys
 from abc import ABC, abstractmethod
 import logging
 from collections import defaultdict
+sys.path.insert(0, '../../Utilities') # Fix for where your Utilities dir is.
+from StringUtil import LineAccmulator
+
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -13,6 +17,7 @@ class PythonImport(ABC):
     """
     def __init__(self):
         self._libs = {}
+        self._emitter = LineAccmulator()
 
     @property
     def libs(self) -> dict:
