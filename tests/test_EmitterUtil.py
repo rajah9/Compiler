@@ -28,6 +28,5 @@ class Test_EmitterUtil(TestCase):
         act = self._eu.preamble()
         self.assertTrue(cu.any_string_contains(lines=act, find_me=exp))
 
-
 if __name__ == '__main__':
     main()

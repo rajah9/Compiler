@@ -69,5 +69,39 @@ class Test_PythonStyleImport(test_PythonImport):
         act4 = self.py.add_lib_method(lib=lib4)
         self.assertEqual(exp4, act4, 'fail test 4')
 
+    def test_emit(self):
+        # Test 1. Add a single method. Should emit a "from <lib> import <method>"
+        lib1 = 'collections'
+        method1 = 'defaultdict'
+        exp1 = f'from {lib1} import {method1}'
+        self.py.add_lib_method(lib=lib1, method=method1)
+        self.py.emit()
+        act1 = self.py.emission()
+        self.assertTrue(next((True for line in act1 if exp1 in line), False))
+        # Test 2. Add a second method. Should emit a "from <lib> import <method1>, <method2>"
+        method2 = 'OrderedDict'
+        exp2 = exp1 + f", {method2}"
+        self.py.add_lib_method(lib=lib1, method=method2)
+        self.py.emit()
+        act2 = self.py.emission()
+        self.assertTrue(next((True for line in act2 if exp2 in line), False))
+        self.fail('in progress')
+
+class Test_PandasStyleImport(test_PythonImport):
+    def setUp(self):
+        self.ps = PandasStyleImport()
+
+    @logit()
+    def test_emit(self):
+        # Test 1. Add the lib pandas and the alias of pd.
+        lib1 = 'pandas'
+        alias1 = 'pd'
+        exp1 = f'import {lib1} as {alias1}'
+        self.ps.add_lib_method(lib=lib1, alias=alias1)
+        self.ps.emit()
+        act1 = self.ps.emission()
+        self.assertTrue(next((True for line in act1 if exp1 in line), False))
+
+
 if __name__ == '__main__':
     main()
