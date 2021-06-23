@@ -118,7 +118,9 @@ class PythonStyleImport(PythonImport):
                 line = f'import {lib}'
             else:
                 # Non-empty set. import the given methods.
-                methods_str = ", ".join(list(methods))
+                sorted_methods = list(methods)
+                sorted_methods.sort()
+                methods_str = ", ".join(sorted_methods)
                 line = f'from {lib} import {methods_str}'
             logger.debug(f'emitting Python-style import: <{line}>')
             self.add_line_to_emission(line)

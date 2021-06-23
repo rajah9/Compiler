@@ -69,7 +69,7 @@ class Test_PythonStyleImport(test_PythonImport):
         act4 = self.py.add_lib_method(lib=lib4)
         self.assertEqual(exp4, act4, 'fail test 4')
 
-    def test_emit(self):
+    def test_emit_1(self):
         # Test 1. Add a single method. Should emit a "from <lib> import <method>"
         lib1 = 'collections'
         method1 = 'defaultdict'
@@ -78,14 +78,21 @@ class Test_PythonStyleImport(test_PythonImport):
         self.py.emit()
         act1 = self.py.emission()
         self.assertTrue(next((True for line in act1 if exp1 in line), False))
-        # Test 2. Add a second method. Should emit a "from <lib> import <method1>, <method2>"
+
+    def test_emit_2(self):
+        # Test 1. Add two methods. Should emit a "from <lib> import <method1>, <method2>"
+        lib1 = 'collections'
+        method1 = 'defaultdict'
         method2 = 'OrderedDict'
-        exp2 = exp1 + f", {method2}"
+        self.py.add_lib_method(lib=lib1, method=method1)
         self.py.add_lib_method(lib=lib1, method=method2)
         self.py.emit()
-        act2 = self.py.emission()
-        self.assertTrue(next((True for line in act2 if exp2 in line), False))
-        self.fail('in progress')
+        sorted_methods = [method1, method2]
+        sorted_methods.sort()
+        methods = ", ".join(sorted_methods)
+        exp1 = f'from {lib1} import {methods}'
+        act1 = self.py.emission()
+        self.assertTrue(next((True for line in act1 if exp1 in line), False))
 
 class Test_PandasStyleImport(test_PythonImport):
     def setUp(self):
