@@ -69,7 +69,8 @@ class Test_PythonStyleImport(test_PythonImport):
         act4 = self.py.add_lib_method(lib=lib4)
         self.assertEqual(exp4, act4, 'fail test 4')
 
-    def test_emit_1(self):
+    @logit()
+    def test_emit_1_method(self):
         # Test 1. Add a single method. Should emit a "from <lib> import <method>"
         lib1 = 'collections'
         method1 = 'defaultdict'
@@ -79,7 +80,8 @@ class Test_PythonStyleImport(test_PythonImport):
         act1 = self.py.emission()
         self.assertTrue(next((True for line in act1 if exp1 in line), False))
 
-    def test_emit_2(self):
+    @logit()
+    def test_emit_2_methods(self):
         # Test 1. Add two methods. Should emit a "from <lib> import <method1>, <method2>"
         lib1 = 'collections'
         method1 = 'defaultdict'
@@ -91,6 +93,16 @@ class Test_PythonStyleImport(test_PythonImport):
         sorted_methods.sort()
         methods = ", ".join(sorted_methods)
         exp1 = f'from {lib1} import {methods}'
+        act1 = self.py.emission()
+        self.assertTrue(next((True for line in act1 if exp1 in line), False))
+
+    @logit()
+    def test_emit_no_methods(self):
+        # Test 1. Add a bare lib. Should emit a "import <lib>"
+        lib1 = 'sys'
+        exp1 = f'import {lib1}'
+        self.py.add_lib_method(lib=lib1)
+        self.py.emit()
         act1 = self.py.emission()
         self.assertTrue(next((True for line in act1 if exp1 in line), False))
 
