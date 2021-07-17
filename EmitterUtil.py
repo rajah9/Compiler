@@ -1,14 +1,18 @@
 import logging
-import sys
+from Add_path import Add_path
 
-sys.path.insert(0, '../../Utilities') # Fix for where your Utilities dir is.
-
-from StringUtil import LineAccmulator
+Add_path.add_path('../../Utilities')
+from StringUtil import LineAccumulator, StringUtil
 from DateUtil import DateUtil
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+"""
+Interesting Python features:
+* This is a Bridge Design Pattern.
+* The base class, EmitterUtil, is abstract; while the child classes, such as PandasEmitterUtil, are the implementation.  
+"""
 
 class EmitterUtil:
     """
@@ -16,12 +20,16 @@ class EmitterUtil:
     This is paired with ParserUtil and CompilerUtil.
     """
     def __init__(self, **kw):
-        self._program = LineAccmulator()
+        self._program = LineAccumulator()
+        self._su = StringUtil()
         self._du = DateUtil()
         self._dataframes = set()
 
     def emit(self):
         self._program.add_lines(self.preamble())
+        self._program.add_lines(self.emit_imports())
+        self._program.add_lines(self.emit_body())
+        self._program.add_lines(self.emit_close())
         logger.debug(f'Python program to be emitted:\n\n{self._program.contents}')
 
     def preamble(self):
@@ -35,15 +43,29 @@ class EmitterUtil:
         ]
         return ans
 
+    def gen_header(self, header:str) -> list:
+        header = self._su.fill_string(my_str = header, fill_str = '-', fill_width = 80, alignment = 'center')
+        ans = ['"""', ' ', header, ' ', '"""',]
+        return ans
+
     def emit_imports(self):
-        pass
+        return self.gen_header(header="imports")
 
     def emit_body(self):
-        pass
+        return self.gen_header(header="body")
 
     def emit_close(self):
-        pass
+        return self.gen_header(header="close")
+
 
 class PandasEmitterUtil(EmitterUtil):
+    def __init__(self, **kw):
+        pass
+
+class PythonEmitterUtil(EmitterUtil):
+    def __init__(self, **kw):
+        pass
+
+class SasSummarizeUtil(EmitterUtil):
     def __init__(self, **kw):
         pass

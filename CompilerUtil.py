@@ -4,10 +4,18 @@ from collections import defaultdict
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+"""
+Interesting Python features:
+* This is a Bridge Design Pattern.
+*   The base class, CompilerUtil, is abstract; while the child classes, such as SasCompilerUtil, are implementations.
+*
+* These classes are also following an Adapter Design Pattern.    
+*   This is paired with ParserUtil for parsing source text and EmitterUtil for generating target text.
+"""
+
 class CompilerUtil:
     """
     Base class for a compiler.
-    This is paired with ParserUtil.
     """
 
     def __init__(self, **kw):
