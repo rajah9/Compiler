@@ -1,5 +1,6 @@
 import logging
 from Add_path import Add_path
+from typing import Union, List
 
 Add_path.add_path('../../Utilities')
 from StringUtil import LineAccumulator, StringUtil
@@ -7,6 +8,8 @@ from DateUtil import DateUtil
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+Strings = List[str]
 
 """
 Interesting Python features:
@@ -24,6 +27,7 @@ class EmitterUtil:
         self._su = StringUtil()
         self._du = DateUtil()
         self._dataframes = set()
+        self._body = LineAccumulator()
 
     def emit(self):
         self._program.add_lines(self.preamble())
@@ -52,11 +56,19 @@ class EmitterUtil:
         return self.gen_header(header="imports")
 
     def emit_body(self):
-        return self.gen_header(header="body")
+        ans = self.gen_header(header="body")
+        body_lines = self._body.contents
+        ans.extend(body_lines)
+        return ans
 
     def emit_close(self):
         return self.gen_header(header="close")
 
+    def add_to_body(self, lines: Union[str, Strings]):
+        self.add_lines(self._body, lines)
+
+    def add_lines(self, accumulator: LineAccumulator, lines: Union[str, Strings]):
+        accumulator.add_line_or_lines(lines)
 
 class PandasEmitterUtil(EmitterUtil):
     def __init__(self, **kw):
