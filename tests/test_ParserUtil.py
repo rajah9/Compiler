@@ -18,5 +18,5 @@ class Test_SasParser(TestCase):
 
     def test_proc_data(self):
         s = SasParser()
-        s.input_lines = 'PROC MEANS data=Hello;\nRUN;'
+        s.input_lines = '** comment **;\nPROC MEANS data=Hello; /* comment */\nRUN;'
         s.run()

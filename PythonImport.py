@@ -2,7 +2,9 @@ import sys
 from abc import ABC, abstractmethod
 import logging
 from collections import defaultdict
-sys.path.insert(0, '../../Utilities') # Fix for where your Utilities dir is.
+from Add_path import Add_path
+Add_path.add_path(newPath=r'C:\Users\Owner\PycharmProjects\Utilities')
+# sys.path.insert(0, r'C:\Users\Owner\PycharmProjects\Utilities') # Fix for where your Utilities dir is.
 from StringUtil import LineAccmulator
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)

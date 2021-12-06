@@ -101,10 +101,17 @@ class SasParser(ParserUtil):
         return t
 
     t_ignore = ' \t'
+    t_ignore_COMMENT = r'(\/\*(.|\n)*\*\/)|(^\s*\*(.|\n)*;)'
+
+    # def t_comment(self, t):
+    #     r'(\/\*(.|\n)*\*\/)|(^\s*\*(.|\n)*;)'
+    #     t.lexer.lineno += t.value.count('\n')
+    #     pass
 
     def t_newline(self, t):
         r'\n+'
         t.lexer.lineno += t.value.count('\n')
+
 
     def t_error(self, t):
         logger.error(f'Illegal character {t.value[0]}')

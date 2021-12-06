@@ -4,9 +4,10 @@ from unittest import TestCase, main
 
 from CompilerUtil import SasCompilerUtil
 from PythonImport import PythonImport, PandasStyleImport, PythonStyleImport
-
-sys.path.insert(0, '../../Utilities') # Fix for where your Utilities dir is.
-from LogitUtil import logit
+# from Add_path import Add_path
+# Add_path.find_ancestor_with_child(child='Utilities')
+# sys.path.insert(0, '../../Utilities') # Fix for where your Utilities dir is.
+# from LogitUtil import logit
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -23,15 +24,12 @@ class Test_PandasStyleImport(test_PythonImport):
     def setUp(self):
         self.pd = PandasStyleImport()
 
-    @logit()
     def test_libs_getter_setter(self):
         exp = {'collections': 'defaultdict'}
         self.pd.libs = exp
         act = self.pd.libs
         self.assertEqual(exp, act, 'Test 1 fail')
 
-
-    @logit()
     def test_add_lib_method(self):
         # Test 1. Add a single alias. The dictionary returned must be the same as the property.
         lib1 = 'pandas'
@@ -44,7 +42,6 @@ class Test_PythonStyleImport(test_PythonImport):
     def setUp(self):
         self.py = PythonStyleImport()
 
-    @logit()
     def test_add_lib_method(self):
         # Test 1. Add a single method. Should return a set with just that method.
         lib1 = 'collections'
@@ -69,7 +66,6 @@ class Test_PythonStyleImport(test_PythonImport):
         act4 = self.py.add_lib_method(lib=lib4)
         self.assertEqual(exp4, act4, 'fail test 4')
 
-    @logit()
     def test_emit_1_method(self):
         # Test 1. Add a single method. Should emit a "from <lib> import <method>"
         lib1 = 'collections'
@@ -80,7 +76,6 @@ class Test_PythonStyleImport(test_PythonImport):
         act1 = self.py.emission()
         self.assertTrue(next((True for line in act1 if exp1 in line), False))
 
-    @logit()
     def test_emit_2_methods(self):
         # Test 1. Add two methods. Should emit a "from <lib> import <method1>, <method2>"
         lib1 = 'collections'
@@ -96,7 +91,6 @@ class Test_PythonStyleImport(test_PythonImport):
         act1 = self.py.emission()
         self.assertTrue(next((True for line in act1 if exp1 in line), False))
 
-    @logit()
     def test_emit_no_methods(self):
         # Test 1. Add a bare lib. Should emit a "import <lib>"
         lib1 = 'sys'
@@ -110,7 +104,6 @@ class Test_PandasStyleImport(test_PythonImport):
     def setUp(self):
         self.ps = PandasStyleImport()
 
-    @logit()
     def test_emit(self):
         # Test 1. Add the lib pandas and the alias of pd.
         lib1 = 'pandas'
